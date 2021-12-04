@@ -3,6 +3,7 @@
 pragma solidity ^0.8.0;
 
 import "./ITimer.sol";
+import "./ITimerCallback.sol";
 
 contract TimerManager is ITimer {
 
@@ -48,8 +49,16 @@ contract TimerManager is ITimer {
         emit DestroyTimerEvent(_id);
     }
 
-    function onTimeout(uint _id, uint _seconds, bool _periodic, address _owner) external override hasTimer(_id) {
-        delete timers[_id];
+    function onTimeout(uint _id, bool _periodic, address _owner) external override hasTimer(_id) {
         emit TimerExpireEvent(_id);
+
+        ITimerCallback callback = ITimerCallback(_owner);
+        callback.onTimeout(_id);
+
+        if(_periodic) {
+            this.restart(_id);
+        } else {
+            this.destroy(_id);
+        }
     }
 }

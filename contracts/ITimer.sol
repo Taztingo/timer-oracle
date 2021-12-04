@@ -8,5 +8,5 @@ interface ITimer {
     function resume(uint _id) external;
     function restart(uint _id) external;
     function destroy(uint _id) external;
-    function onTimeout(uint _id, uint _sec, bool _periodic, address _owner) external;
+    function onTimeout(uint _id, bool _periodic, address _owner) external;
 }
