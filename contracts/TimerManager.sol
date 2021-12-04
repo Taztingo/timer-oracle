@@ -23,7 +23,6 @@ contract TimerManager is ITimer {
         _;
     }
 
-    // The end time is not correctly calculated
     function start(uint _seconds, bool _periodic) external override returns (uint) {
         uint256 id = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, nonce))) % modulus;
         timers[id] = true;
