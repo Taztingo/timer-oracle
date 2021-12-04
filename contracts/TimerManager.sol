@@ -7,7 +7,7 @@ contract TimerManager is ITimer {
 
     struct Timer {
         uint duration;
-        uint startTime;
+        uint endTime;
         bool isPaused;
         bool isPeriodic;
         address owner;
@@ -17,6 +17,7 @@ contract TimerManager is ITimer {
     event PauseTimerEvent(uint id);
     event ResumeTimerEvent(uint id);
     event RestartTimerEvent(uint id);
+    event TimerExpireEvent(uint id);
 
     uint private nonce = 0;
     uint private modulus = 1000;
@@ -35,6 +36,7 @@ contract TimerManager is ITimer {
     }
 
     function pause(uint _id) external {
+
     }
 
     function restart(uint _id) external {
@@ -45,7 +47,28 @@ contract TimerManager is ITimer {
 
     }
 
-    function tick(uint _seconds) external {
 
+    function tick() external {
+        // Find the expired timers
+        for(uint i = 0; i < timerIds.length; i++) {
+            uint id = timerIds[i];
+            Timer memory timer = timerMap[id];
+
+            // Timer expired
+            if(!timer.isPaused && block.timestamp > timer.endTime) {
+                emit TimerExpireEvent(id);
+                if(timer.isPeriodic) {
+                    this.restart(id);
+                } else {
+                    // Replace element with last one and remove from map
+                    timerIds[i] = timerIds[timerIds.length - 1];
+                    timerIds.pop();
+                    delete timerMap[id];
+
+                    // Decrement i so we stay on same index
+                    i--;
+                }
+            }
+        }
     }
 }
