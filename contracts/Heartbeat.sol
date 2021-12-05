@@ -31,5 +31,6 @@ contract Heartbeat is ITimerCallback {
 
     function onTimeout(uint _id) external override hasId(_id) {
         emit HeartbeatEvent(messages[_id]);
+        delete messages[_id];
     }
 }
