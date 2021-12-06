@@ -1,17 +1,22 @@
 const { expect, assert } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers, waffle } = require("hardhat");
+const { provider, deployMockContract } = waffle
+
+const ITimer = require('../artifacts/contracts/ITimer.sol/ITimer.json');
 
 describe("Heartbeat", () => {
-  let TimerManager;
   let timerManager;
   let Heartbeat;
   let heartbeat;
 
-  before(async () => {
-    TimerManager = await ethers.getContractFactory("MockTimerManager");
-    timerManager = await TimerManager.deploy();
-    await timerManager.deployed();
+  async function setupMock() {
+    const [wallet, otherWallets] = provider.getWallets();
+    timerManager = await deployMockContract(wallet, ITimer.abi);
+    await timerManager.mock.start.returns(0);
+  }
 
+  before(async () => {
+    await setupMock();
     Heartbeat = await ethers.getContractFactory("Heartbeat");
     heartbeat = await Heartbeat.deploy(timerManager.address);
     await heartbeat.deployed();
