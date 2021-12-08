@@ -11,7 +11,7 @@ contract TimerManager is ITimer {
     event PauseTimerEvent(uint id);
     event ResumeTimerEvent(uint id);
     event RestartTimerEvent(uint id);
-    event TimerExpireEvent(uint id);
+    event ExpireTimerEvent(uint id);
     event DestroyTimerEvent(uint id);
 
     uint private nonce = 0;
@@ -49,7 +49,7 @@ contract TimerManager is ITimer {
     }
 
     function onTimeout(uint _id, bool _periodic, address _owner) external override hasTimer(_id) {
-        emit TimerExpireEvent(_id);
+        emit ExpireTimerEvent(_id);
 
         ITimerCallback callback = ITimerCallback(_owner);
         callback.onTimeout(_id);
