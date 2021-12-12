@@ -6,7 +6,14 @@ async function main() {
   const Heartbeat = await ethers.getContractFactory("Heartbeat");
   const heartbeat = await Heartbeat.deploy(timerManager.address);
 
-  console.log("TimerManager and Heartbeat have both been deployed.");
+  console.log("Heartbeat deployed to " + heartbeat.address);
+  console.log("TimerManager deployed to " + timerManager.address);
+  console.log("StartTimerEvent id: " + ethers.utils.id("StartTimerEvent(uint256,uint256,bool,address)"));
+  console.log("PauseTimerEvent id: " + ethers.utils.id("PauseTimerEvent(uint256)"));
+  console.log("ResumeTimerEvent id: " + ethers.utils.id("ResumeTimerEvent(uint256)"));
+  console.log("RestartTimerEvent id: " + ethers.utils.id("RestartTimerEvent(uint256)"));
+  console.log("ExpireTimerEvent id: " + ethers.utils.id("ExpireTimerEvent(uint256)"));
+  console.log("DestroyTimerEvent id: " + ethers.utils.id("DestroyTimerEvent(uint256)"));
 }
 
 main()

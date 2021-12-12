@@ -7,12 +7,12 @@ import "./ITimerCallback.sol";
 
 contract TimerManager is ITimer {
 
-    event StartTimerEvent(uint id, uint sec, bool periodic, address owner);
-    event PauseTimerEvent(uint id);
-    event ResumeTimerEvent(uint id);
-    event RestartTimerEvent(uint id);
-    event ExpireTimerEvent(uint id);
-    event DestroyTimerEvent(uint id);
+    event StartTimerEvent(uint256 id, uint256 sec, bool periodic, address owner);
+    event PauseTimerEvent(uint256 id);
+    event ResumeTimerEvent(uint256 id);
+    event RestartTimerEvent(uint256 id);
+    event ExpireTimerEvent(uint256 id);
+    event DestroyTimerEvent(uint256 id);
 
     uint private nonce = 0;
     uint private modulus = 1000;
